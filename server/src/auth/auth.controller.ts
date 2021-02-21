@@ -1,21 +1,39 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
-import { ResponseObject } from 'src/models/response.model';
-import { AuthResponse, RegisterBody, RegisterDTO } from 'src/models/user.models';
-import { AuthService } from './auth.service';
+import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiBody,
+} from '@nestjs/swagger';
 
+import { AuthService } from './auth.service';
+import {
+  RegisterDTO,
+  LoginDTO,
+  AuthResponse,
+  RegisterBody,
+  LoginBody,
+} from '../models/user.model';
 @Controller('auth')
 export class AuthController {
+  constructor(private authService: AuthService) {}
 
-  constructor(
-    private authService: AuthService,
-  ){}
-
-  @Post('register')
-  @ApiCreatedResponse({ description: '用户注册' })
+  @Post('/register')
+  @ApiCreatedResponse({ description: 'User Registration' })
   @ApiBody({ type: RegisterBody })
-  async register(@Body('user',ValidationPipe) registerDTO:RegisterDTO):Promise<ResponseObject<'user',AuthResponse>> {
-    const user = await this.authService.register(registerDTO)
-    return {user}
+  async register(
+    @Body('user',ValidationPipe) credentials: RegisterDTO,
+  ): Promise<AuthResponse> {
+    return await this.authService.register(credentials);
+  }
+
+  @Post('/login')
+  @ApiOkResponse({ description: 'User Login' })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  @ApiBody({ type: LoginBody })
+  async login(
+    @Body('user', ValidationPipe) credentials: LoginDTO,
+  ): Promise< AuthResponse> {
+    return await this.authService.login(credentials);
   }
 }

@@ -1,0 +1,36 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate"
+  },
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^2.0.1",
+    "@nuxtjs/auth-next": "5.0.0-1611574754.9020f2a",
+    "@nuxtjs/axios": "^5.13.0",
+    "@tinymce/tinymce-vue": "^3.2.8",
+    "ali-oss": "^6.13.2",
+    "core-js": "^3.8.3",
+    "eslint": "^7.19.0",
+    "fs": "^0.0.1-security",
+    "nuxt": "^2.14.12",
+    "nuxt-property-decorator": "^2.9.1",
+    "tinymce": "^5.7.0",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.1.2"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.14.12",
+    "@nuxt/typescript-build": "^2.0.4",
+    "@nuxtjs/vuetify": "^1.11.3",
+    "@types/ali-oss": "^6.0.7",
+    "@types/vuelidate": "^0.7.13",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  }
+}

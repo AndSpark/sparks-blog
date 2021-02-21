@@ -1,29 +1,26 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as path from 'path';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticleModule } from './article/article.module';
 import { DatabaseConnectionService } from './database-connection.service';
-import { UserController } from './user/user.controller';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { ArticleModule } from './article/article.module';
+import { TagEntity } from './entities/tag.entity';
+import { StsController } from './sts/sts.controller';
+
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: path.join(__dirname,'../.env'),
-      isGlobal:true
-    }),
     TypeOrmModule.forRootAsync({
-      useClass:DatabaseConnectionService
-    })
-    ,
-    ArticleModule,
+      useClass: DatabaseConnectionService,
+    }),
+    TypeOrmModule.forFeature([TagEntity]),
+    AuthModule,
     UserModule,
-    AuthModule
+    ArticleModule,
   ],
-  controllers: [AppController, UserController],
+  controllers: [AppController, StsController],
   providers: [AppService],
 })
 export class AppModule {}

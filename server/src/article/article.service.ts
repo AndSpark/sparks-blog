@@ -94,10 +94,11 @@ export class ArticleService {
     const article = this.articleRepo.create(data);
     article.author = user;
     await this.upsertTags(data.tagList);
-    const articleEntity = await this.articleRepo.save(article);
-    let a = await this.articleRepo.findOne({ title: articleEntity.title },{relations:['userEntity']})
-    console.log(a);
-    return (await this.articleRepo.findOne({ slug:articleEntity.slug })).toArticle(user);
+    await article.save();
+    user.articlesCount++;
+    await user.save();
+    const articleEntity = await this.articleRepo.findOne({ title: article.title })
+    return articleEntity.toArticle(user);
   }
 
   async updateArticle(

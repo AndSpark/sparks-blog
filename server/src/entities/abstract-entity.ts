@@ -1,25 +1,16 @@
 import {
   BaseEntity,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ObjectIdColumn,
-  ObjectID,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Types } from 'mongoose'
 import { Exclude, Expose } from 'class-transformer';
 
 
 export abstract class AbstractEntity extends BaseEntity {
 
-  @ObjectIdColumn()
-  @Exclude()
-  _id: ObjectID;
-
-  @Expose()
-  get id() { 
-    return (this._id) .toString();
-  }
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Exclude()
   @CreateDateColumn()

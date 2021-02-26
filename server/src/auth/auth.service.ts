@@ -33,7 +33,7 @@ export class AuthService {
     credentials.uid = count + 1
     Object.assign(credentials, {
       bio: '开始你的历程',
-      avatar: 'https://picsum.photos/200',
+      avatar: 'https://picsum.photos/200'
     })
     const user = this.userRepo.create(credentials);
     await user.save();

@@ -9,6 +9,7 @@ import {
   OneToOne,
   AfterLoad,
   AfterUpdate,
+  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude, classToPlain, Expose } from 'class-transformer';
@@ -59,7 +60,6 @@ export class UserEntity extends AbstractEntity {
   @OneToMany(
     type => ArticleEntity,
     article => article.author,
-    {onDelete:'CASCADE'}
   )
   articles: ArticleEntity[];
 
@@ -87,15 +87,6 @@ export class UserEntity extends AbstractEntity {
 
   @Column({ default: 0 })
   articlesViewCount:number
-
-  @AfterLoad()
-  getCount() {
-    console.log(this.articles);
-    this.followersCount = this.followers ? this.followers.length : 0
-    this.followeeCount = this.followee ? this.followee.length : 0
-    this.articlesCount = this.articles ? this.articles.length : 0
-    this.articlesViewCount = this.articles ? this.articles.reduce((pre,cur) => {return pre + cur.viewCount},0) : 0
-  }
 
   @BeforeInsert()
   async hashPassword() {

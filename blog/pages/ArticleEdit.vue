@@ -106,7 +106,7 @@ export default class Article extends Vue {
         article: this.createArticle,
       })
       this.showCreateArticleSuccees = true
-      this.$router.push('/')
+      // this.$router.push('/')
     } catch (error) {
       this.showCreateArticleError = true
     }

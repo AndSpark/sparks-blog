@@ -8,6 +8,7 @@ import {
   JoinTable,
   OneToMany,
   AfterUpdate,
+  JoinColumn,
 } from 'typeorm';
 import { classToPlain, Expose } from 'class-transformer';
 import * as slugify from 'slug';
@@ -52,12 +53,13 @@ export class ArticleEntity extends AbstractEntity {
     type => CommentEntity,
     comment => comment.article,
   )
+    
   comments: CommentEntity[];
 
   @ManyToOne(
     type => UserEntity,
     user => user.articles,
-    { cascade: true ,eager: true,},
+    {eager:true}
   )
   author: UserEntity;
 

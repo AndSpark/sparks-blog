@@ -35,8 +35,13 @@ export class ArticleEntity extends AbstractEntity {
   @Column()
   category: string;
 
+  @Column()
+  cover: string;
+
   @Column({default:0})
   viewCount: number;
+
+
 
   @ManyToMany(
     type => UserEntity,

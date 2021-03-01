@@ -77,8 +77,8 @@ import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 export default class SideMenu extends Vue {
   links = [
     { title: '大厅', icon: 'mdi-home-outline', to: '/' },
-    { title: '技术', icon: 'mdi-web', to: '/tech' },
-    { title: '娱乐', icon: 'mdi-music-box-multiple-outline', to: '/rela' },
+    { title: '帖子', icon: 'mdi-text', to: '/articles' },
+    { title: '应用', icon: 'mdi-application', to: '/application' },
     {
       title: '分享',
       icon: 'mdi-circle-edit-outline',

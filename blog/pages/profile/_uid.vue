@@ -60,21 +60,10 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { setToken, uploadAliOSS } from '@/common/script/common.ts'
-import OSS from 'ali-oss'
-
 @Component({})
 export default class profile extends Vue {
   profile: any = null
   profileEdit: any = null
-  subInfos: Object[] = [
-    { title: '粉丝数', count: this.profile ? this.profile.followersCount : 0 },
-    { title: '关注数', count: this.profile ? this.profile.followeeCount : 0 },
-    { title: '内容数', count: this.profile ? this.profile.articlesCount : 0 },
-    {
-      title: '阅读数',
-      count: this.profile ? this.profile.articlesViewCount : 0,
-    },
-  ]
   isEditing = false
   isUpdate = false
   isUpdateError = false
@@ -88,12 +77,26 @@ export default class profile extends Vue {
     }
   }
 
+  
+
   get isUserSelf() {
     let userInfo: userInfo = this.$store.state.userInfo
     if (userInfo.uid === this.profile.uid) {
       return true
     }
     return false
+  }
+
+  get subInfos(){
+    return [
+    { title: '粉丝数', count: this.profile ? this.profile.followersCount : 0 },
+    { title: '关注数', count: this.profile ? this.profile.followeeCount : 0 },
+    { title: '内容数', count: this.profile ? this.profile.articlesCount : 0 },
+    {
+      title: '阅读数',
+      count: this.profile ? this.profile.articlesViewCount : 0,
+    },
+  ]
   }
 
   async save() {
@@ -152,7 +155,6 @@ export default class profile extends Vue {
         this.profileEdit.avatar = e.target?.result
       }
     }
-
     input.click()
   }
 }

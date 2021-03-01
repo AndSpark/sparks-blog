@@ -1,27 +1,27 @@
 <template>
   <div id="Article">
-    <v-row>
-      <v-col cols="8">
-        <v-text-field
-          label="文章标题"
-          v-model="createArticle.title"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="4">
-        <v-select
-          label="分类"
-          :items="category"
-          v-model="createArticle.category"
-        ></v-select>
-      </v-col>
+    <v-row class="mb-2">
       <v-col cols="6">
-        <v-text-field
-          label="文章描述"
-          v-model="createArticle.description"
-        ></v-text-field>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              label="文章标题"
+              v-model="createArticle.title"
+            ></v-text-field>
+          </v-col>
+      <v-col cols="6" class="d-flex pb-2 ">
+        <v-subheader class="pt-4 text-body-1">分类：</v-subheader>
+        <v-radio-group row v-model="createArticle.category" >
+          <v-radio
+            v-for="n in categoryList"
+            :key="n.text"
+            :label="n.text"
+            :value="n.value"
+          ></v-radio>
+    </v-radio-group>
       </v-col>
-      <v-col cols="6" class="d-flex pb-2 pt-6 flex-wrap">
-        <v-subheader>标签：</v-subheader>
+      <v-col cols="6" class="d-flex pb-2 flex-wrap">
+        <v-subheader class="pt-4 text-body-1">标签：</v-subheader>
         <v-chip
           close
           class="my-2 mr-2"
@@ -43,6 +43,15 @@
           >
         </v-sheet>
       </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="4">
+        <v-sheet class="d-flex pt-6">
+          <p class="secondary--text text-body-1">封面：</p>
+          <image-upload width="120" ref="imageUpload" isEditing :imageSrc.sync="createArticle.cover"></image-upload>
+        </v-sheet>
+      </v-col>
+      
     </v-row>
     <tinymceEditor
       @writeContent="getWriteContent"
@@ -70,38 +79,46 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import tinymceEditor from '~/components/common/tinymce-editor/tinymceEditor.vue'
+import ImageUpload from '~/components/common/image-upload/ImageUpload.vue'
 
 @Component({
-  components: { tinymceEditor },
+  components: { tinymceEditor,ImageUpload },
 })
 export default class Article extends Vue {
   isShowEdit = true
   isAddTag = false
+  categoryList = [{text:'技术',value:'technology'},{text:'娱乐',value:'amusement'}]
   showTagSnackbar = false
   showCreateArticleError = false
   showCreateArticleSuccees = false
   articleContent = ''
-  category = ['技术', '娱乐']
   currentTag = ''
   createArticle: CreateArticle = {
     title: '',
     body: '',
     description: '',
-    category: '',
     tagList: [],
+    category: '',
+    cover: 'https://picsum.photos/200',
   }
 
-  getWriteContent(content: string) {
-    this.articleContent = content
-    this.createArticle.body = content
+
+  getWriteContent({body,text}:any) {
+    this.articleContent = body
+    this.createArticle.body = body
+    this.createArticle.description = text.slice(0,50)
+
   }
   removeTag(tag: string) {
     this.createArticle.tagList = this.createArticle.tagList.filter(
       (v) => v !== tag
     )
   }
+
   async addArticle() {
     try {
+      this.createArticle.cover = await this.$refs.imageUpload.uploadImg()
+
       let { data } = await this.$axios.post('articles', {
         article: this.createArticle,
       })

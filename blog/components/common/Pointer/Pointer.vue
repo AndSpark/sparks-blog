@@ -61,7 +61,7 @@ export default class Pointer extends Vue {
       e.preventDefault()
     })
     this.addNodePointer(document.body)
-    tsetTimeout(() => {
+    setTimeout(() => {
       this.addPointer()
     }, 500)
   }

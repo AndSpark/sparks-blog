@@ -13,16 +13,21 @@ export class CreateArticleDTO {
   body: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty()
-  description: string;
+  cover: string;
 
   @IsString()
   @ApiProperty()
-  category: string;
+  description: string;
+
 
   @IsArray()
   @ApiProperty()
   tagList: string[];
+
+  @ApiProperty()
+  category: string;
 
 }
 
@@ -47,6 +52,11 @@ export class UpdateArticleDTO {
   @ApiProperty()
   description: string;
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  cover: string;
+
   @IsArray()
   @IsOptional()
   @ApiProperty()
@@ -61,6 +71,7 @@ export class UpdateArticleBody {
 export interface FindFeedQuery {
   limit?: number;
   offset?: number;
+  category?: string;
 }
 
 export interface FindAllQuery extends FindFeedQuery {
@@ -73,6 +84,7 @@ export interface ArticleResponse {
   slug: string;
   title: string;
   description: string;
+  cover: string;
   body: string;
   tagList: string[];
   createdAt: Date | string;

@@ -46,6 +46,9 @@ export class ArticleService {
     if (query.favorited) {
       findOptions.where['favoritedBy.username'] = query.favorited;
     }
+    if (query.category) {
+      findOptions.where.category = query.category;
+    }
     if (query.tag) {
       findOptions.where.tagList = Like(`%${query.tag}%`);
     }
@@ -123,6 +126,8 @@ export class ArticleService {
       throw new UnauthorizedException();
     }
     await this.articleRepo.remove(article);
+    user.articlesCount--;
+    await user.save();
     return article.toArticle(user);
   }
 
@@ -133,7 +138,6 @@ export class ArticleService {
     const article = await this.findBySlug(slug);
     article.favoritedBy.push(user);
     await article.save();
-    console.log(article);
     return (await this.findBySlug(slug)).toArticle(user);
   }
 

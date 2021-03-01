@@ -30,7 +30,7 @@ declare interface CreateArticle {
   description: string;
   tagList: string[];
   category: string;
-
+  cover?: string;
 }
 
 declare module '@packy-tang/vue-tinymce' {

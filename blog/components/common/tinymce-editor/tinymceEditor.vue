@@ -1,5 +1,6 @@
 <template>
   <client-only>
+    
     <editor id="tinymce" v-model="contents" :init="init"></editor>
   </client-only>
 </template>
@@ -65,7 +66,7 @@ export default {
         language_url: '/tinymce/langs/zh_CN.js', // 语言包的路径
         language: 'zh_CN', //语言
         skin_url: '/tinymce/skins/ui/oxide', // skin路径
-        height: 600, //编辑器高度
+        height: 500, //编辑器高度
         branding: false, //是否禁用“Powered by TinyMCE”
         menubar: true, //顶部菜单栏显示
         object_resizing: false, // 是否禁用表格图片大小调整
@@ -204,6 +205,8 @@ export default {
       },
       // 绑定的内容
       contents: this.modifyContent,
+      tinymce:null,
+      text:null
     }
   },
   mounted() {
@@ -211,6 +214,7 @@ export default {
     this.$nextTick(() => {
       if (process.client) {
         window.tinymce.init({})
+        this.tinymce  = document.getElementById('tinymce_ifr').contentWindow.document.getElementById('tinymce')
       }
     })
   },
@@ -219,7 +223,8 @@ export default {
       this.contents = newValue
     },
     contents(newValue) {
-      this.$emit('writeContent', newValue)
+      this.text = this.tinymce.innerText
+      this.$emit('writeContent', {body:newValue,text:this.text})
     },
   },
 }
